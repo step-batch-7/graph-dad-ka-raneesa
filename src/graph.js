@@ -21,15 +21,14 @@ const bfs = function(pairs, source, target) {
   if (keys.includes(source)) {
     while (queue && queue.length) {
       const node = queue.shift();
+      if (node === target) return true;
       table[node].forEach(connectedNode => {
-        if (!queue.includes(connectedNode) && !visitedList.includes(connectedNode)) {
+        const isAlreadyExists = queue.includes(connectedNode) || visitedList.includes(connectedNode);
+        if (!isAlreadyExists) {
           queue.push(connectedNode);
         }
       });
       visitedList.push(node);
-      if (node === target) {
-        return true;
-      }
     }
   }
   return false;

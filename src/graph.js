@@ -24,7 +24,7 @@ const bfs = function(pairs, source, target) {
   let flag = false;
   const keys = Object.keys(data);
   queue.push(source);
-  if (keys.includes(source) && keys.includes(target)) {
+  if (keys.includes(source)) {
     while (queue && queue.length) {
       const node = queue.shift();
       data[node].forEach(connectedNode => {

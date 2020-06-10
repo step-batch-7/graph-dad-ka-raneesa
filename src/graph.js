@@ -4,42 +4,35 @@
 // To => to 
 // Should return true.
 
-const convertToObject = function(pairs) {
-  let data = {};
-  pairs.reduce((data, pair) => {
-    const keys = Object.keys(data);
-    if (!keys.includes(pair[0])) {
-      data[pair[0]] = [];
-    }
-    data[pair[0]].push(pair[1]);
-    return data;
-  }, data);
-  return data;
+const generateAdjacencyTable = function(pairs) {
+  let table = {};
+  pairs.forEach(([src, dest]) => {
+    if (!table[src]) table[src] = [];
+    table[src].push(dest);
+  })
+  return table;
 }
 
 const bfs = function(pairs, source, target) {
-  const data = convertToObject(pairs);
+  const table = generateAdjacencyTable(pairs);
   let visitedList = [];
-  let queue = [];
-  let flag = false;
-  const keys = Object.keys(data);
-  queue.push(source);
+  let queue = [source];
+  const keys = Object.keys(table);
   if (keys.includes(source)) {
     while (queue && queue.length) {
       const node = queue.shift();
-      data[node].forEach(connectedNode => {
+      table[node].forEach(connectedNode => {
         if (!queue.includes(connectedNode) && !visitedList.includes(connectedNode)) {
           queue.push(connectedNode);
         }
       });
       visitedList.push(node);
       if (node === target) {
-        flag = true;
-        return flag;
+        return true;
       }
     }
   }
-  return flag;
+  return false;
 };
 
 module.exports = { bfs };

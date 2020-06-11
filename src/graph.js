@@ -17,11 +17,10 @@ const bfs = function(pairs, source, target) {
   const table = generateAdjacencyTable(pairs);
   let visitedList = [];
   let queue = [source];
-  if (source === target && !table[source].includes(target)) return false;
   while (queue && queue.length) {
     const node = queue.shift();
     if (table[node]) {
-      if (node === target) return true;
+      if (table[node].includes(target)) return true;
       table[node].forEach(connectedNode => {
         const isAlreadyExists = queue.includes(connectedNode) || visitedList.includes(connectedNode);
         if (!isAlreadyExists) queue.push(connectedNode);

@@ -4,6 +4,7 @@
 // To => to 
 // Should return true.
 
+
 const generateAdjacencyTable = function(pairs) {
   let table = {};
   pairs.forEach(([src, dest]) => {
@@ -11,6 +12,26 @@ const generateAdjacencyTable = function(pairs) {
     table[src].push(dest);
   })
   return table;
+}
+
+const search = function(source, target, visited, adjacencyTable) {
+  const adjacentNodes = adjacencyTable[source] || [];
+  visited.push(source);
+  if (adjacentNodes.includes(target)) return [source, target];
+  const uniqueNodes = adjacentNodes.filter((child) => !visited.includes(child));
+  const stack = [...uniqueNodes];
+  while (stack.length != 0) {
+    const toVisit = stack.pop();
+    let path = search(toVisit, target, visited, adjacencyTable)
+    if (path) return [source, ...path];
+  }
+  return;
+}
+
+const dfs = function(pairs, source, target) {
+  const adjacencyTable = generateAdjacencyTable(pairs);
+  const visited = [];
+  return search(source, target, visited, adjacencyTable);
 }
 
 const bfs = function(pairs, source, target) {
@@ -31,4 +52,4 @@ const bfs = function(pairs, source, target) {
   return false;
 };
 
-module.exports = { bfs };
+module.exports = { bfs, dfs };
